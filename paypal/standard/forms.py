@@ -99,6 +99,10 @@ class PayPalPaymentsForm(forms.Form):
         super(PayPalPaymentsForm, self).__init__(*args, **kwargs)
         self.button_type = button_type
 
+    def smart_render(self):
+        """Render for PayPal if not PAYPAL_DEBUG, for PayPay Sandbox if PAYPAL_DEBUG."""
+        return self.render() if not settings.PAYPAL_DEBUG else self.sandbox()
+
     def render(self):
         return mark_safe(u"""<form action="%s" method="post">
     %s
